@@ -6,9 +6,6 @@ import ConsoleLog from "./utils/console.util.js";
 
 dotenv.config({ path: path.resolve('./.env') });
 
-// application level middlewares
-
-
 connectDb().then(() => {
     const port = process.env.SERVER_PORT || 8000;
     app.listen(port, (err) => {
