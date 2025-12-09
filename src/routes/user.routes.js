@@ -1,13 +1,17 @@
 import { Router } from "express";
+import { getAllUsers, getUserById } from "../controllers/user.controller.js";
 
-const userRoute = Router();
+export const userRoute = Router();
 
-userRoute.get('/', (req, res)=>{
-    res.send('hello from user get');
-})
+userRoute.get('/', getAllUsers);
+userRoute.get('/:id', getUserById);
 // userRoute.post('/',)
 // userRoute.put('/',)
 // userRoute.patch('/',)
 // userRoute.delete('/',)
 
-export default userRoute;
+
+// not found route
+// authRoutes.all('/', (req, res)=>{
+//     res.send(`<h1>404</h1>`);
+// })

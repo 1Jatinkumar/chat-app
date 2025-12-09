@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import path from 'path'
-import ConsoleLog from '../utils/console.util.js';
+import { ConsoleLog } from '../utils/console.util.js';
 
 /**
  * @param {import('express').Request} req
@@ -19,7 +19,7 @@ function logger(req, res, next) {
             ConsoleLog('error', 'making serverRequest dir failed', dirErr);
         } else {
             const { method, originalUrl, ip } = req;
-            const fileContent = `[${originalUrl}] [${method}] [${ip}] [${date.toLocaleTimeString()}]\n`;
+            const fileContent = `[${originalUrl}] [${method}] [${ip}] [${date.toTimeString()}]\n`;
 
             fs.appendFile(filePath, fileContent, (fileErr) => {
                 fileErr && ConsoleLog('error', 'serverRequest log failed', fileErr)

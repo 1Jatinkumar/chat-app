@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ConsoleLog from "../utils/console.util.js";
+import { ConsoleLog } from "../utils/console.util.js";
 import env from 'dotenv';
 import path from 'path';
 

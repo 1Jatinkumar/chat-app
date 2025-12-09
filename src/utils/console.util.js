@@ -1,6 +1,6 @@
 import util from 'util';
 
-function ConsoleLog(status, message, error = '') {
+export function ConsoleLog(status, message, error = '') {
     switch (status) {
         case 'success':
             console.log(util.styleText('bgGreen', `Success:`), message);
@@ -15,5 +15,3 @@ function ConsoleLog(status, message, error = '') {
             break;
     }
 }
-
-export default ConsoleLog;
