@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
 import { ConsoleLog } from "../utils/console.util.js";
-import env from 'dotenv';
-import path from 'path';
-
-env.config({ path: path.resolve('./.env') });
 
 const connectDb = async () => {
     try {

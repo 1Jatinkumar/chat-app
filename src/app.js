@@ -1,21 +1,27 @@
+import path from 'path';
 import express from 'express';
+import cors from 'cors'
+import cookieParser from 'cookie-parser';
 import logger from './middlewares/logger.middleware.js';
 import { userRoute } from './routes/user.routes.js';
 import { authRoutes } from './routes/auth.routes.js';
-import path from 'path';
+import { messsageRoute } from './routes/message.routes.js';
 
 const app = express();
 
 // global middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('public')))
+app.use(cookieParser())
 
 app.use(logger);
 
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoute);
+app.use('/api/send', messsageRoute);
 
 
 // not found route

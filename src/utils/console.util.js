@@ -15,3 +15,7 @@ export function ConsoleLog(status, message, error = '') {
             break;
     }
 }
+
+
+export function getDataFromDB(callback) {
+}

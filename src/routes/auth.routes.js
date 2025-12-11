@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { createUser, forgotPassword, login } from "../controllers/auth.controller.js";
+import { emailValidator, passwordValidator } from "../middlewares/validator.js";
 
 export const authRoutes = Router();
 
 // post routes
-authRoutes.post('/', createUser);
-authRoutes.post('/login', login)
+authRoutes.post('/createUser', emailValidator, passwordValidator, createUser);
+authRoutes.post('/login', emailValidator, passwordValidator, login);
 authRoutes.post('/forgotPassword', forgotPassword);
 // authRoutes.put('/',)
 // authRoutes.patch('/',)
