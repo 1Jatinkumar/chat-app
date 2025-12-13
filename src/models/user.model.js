@@ -7,6 +7,7 @@ const userSchema = new Schema(
         name: {
             type: String,
             trim: true,
+            default: null
         },
         email: {
             type: String,
@@ -41,10 +42,12 @@ const userSchema = new Schema(
         city: {
             type: String,
             trim: true,
+            default: null
         },
         country: {
             type: String,
             trim: true,
+            default: null
         },
         refreshToken: {
             type: String,
