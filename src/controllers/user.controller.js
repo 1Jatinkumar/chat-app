@@ -23,5 +23,5 @@ export async function getUserById(req, res) {
 }
 
 export async function getUserByEmail(email) {
-    return await userModel.findOne({email}).lean();
+    return await userModel.findOne({ email }).lean();
 }

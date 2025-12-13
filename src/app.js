@@ -10,9 +10,12 @@ import { messsageRoute } from './routes/message.routes.js';
 const app = express();
 
 // global middlewares
-app.use(cors())
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('public')))
 app.use(cookieParser())
 
@@ -25,7 +28,7 @@ app.use('/api/send', messsageRoute);
 
 
 // not found route
-app.use((req, res)=>{
+app.use((req, res) => {
     res.send(`<h1>404</h1>`);
 })
 
