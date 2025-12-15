@@ -8,8 +8,8 @@ export const passwordValidator = [
         .withMessage('Password is required'),
 
     check('password')
-        .matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}/)
-        .withMessage('Password must be at least 6 character long, must contain at least one uppercase, one lowercase letter, at least one number and at least one special character (@ $ ! % * ? &)'),
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,12}$/)
+        .withMessage('Password length must be 6-12 char long, must contain at least one uppercase, one lowercase letter, at least one number and at least one special character (@ $ ! % * ? &)'),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -19,8 +19,6 @@ export const passwordValidator = [
         next();
     }
 ];
-
-
 
 export const emailValidator = [
     check('email')
@@ -63,14 +61,68 @@ export const postMessageValidator = [
         try {
             const doc = await userModel.find({ _id: { $in: [sender, reciever] } }).lean();
             if (doc.length == 0) {
-                res.status(400).json({ error: 'Incorrect sender & reciever Ids' });
+                return res.status(400).json({ error: 'Incorrect sender & reciever Ids' });
             } else if (doc.length < 2) {
-                res.status(400).json({ error: doc[0]._id == sender ? 'Incorrect reciever ID' : 'Incorrect sender ID' })
+                return res.status(400).json({ error: doc[0]._id == sender ? 'Incorrect reciever ID' : 'Incorrect sender ID' })
             }
         } catch (error) {
             ConsoleLog('error', 'api = api/message: unable to find users', error);
-            res.status(500).json({ error: { message: 'Internal server error' } });
+            return res.status(500).json({ error: { message: 'Internal server error' } });
         }
         next();
     }
+]
+
+export const userSearchValidator = [
+    (req, res, next) => {
+        if (!req.body) {
+            return res.status(400).json({ error: 'body cant be empty searching params required' })
+        }
+        if (!req.body.searchType) {
+            req.body.searchType = "and";
+        }
+        next();
+    }
+]
+
+export const userRequestValidator = [
+    check('to')
+        .notEmpty()
+        .withMessage(`to is required, it can be userId or connectionId`),
+
+    check('type')
+        .notEmpty()
+        .withMessage(`type is required, possible values: 'DM', 'chat'`),
+]
+
+
+export const createConnectionValidator = [
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
+
+    check('type')
+        .notEmpty()
+        .withMessage('type cant be empty options:DM, chat'),
 ]

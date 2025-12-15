@@ -46,7 +46,7 @@ export const customisedMulter = [
     // error middleware (will catch the error thown by multer);
     (err, req, res, next) => {
         if (err) {
-            res.status(500).json({ error: err.message });
+            return res.status(500).json({ error: err.message });
         }
         next();
     }
