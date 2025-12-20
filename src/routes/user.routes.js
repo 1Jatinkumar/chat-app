@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { getAllUsers, getUserById, handleUserRequest, searchUser } from "../controllers/user.controller.js";
-import { userRequestValidator, userSearchValidator } from "../middlewares/validator.js";
+import { getAllUsers, searchUser } from "../controllers/user.controller.js";
+import { userSearchValidator } from "../middlewares/validator.js";
 
 export const userRoutes = Router();
 
 userRoutes.get('/', getAllUsers);
 userRoutes.post('/search', userSearchValidator, searchUser);
-userRoutes.post('/request', userRequestValidator, handleUserRequest)
 
 
 

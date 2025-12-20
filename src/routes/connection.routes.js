@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { createConnection, getConnections } from "../controllers/connection.controller.js";
-import { createConnectionValidator } from "../middlewares/validator.js";
+import { createConnection, getAllConnections } from "../controllers/connection.controller.js";
+import { connectionTypevalidator, createConnectionValidator } from "../middlewares/validator.js";
 
 export const connectionRoutes = Router();
 
 
-connectionRoutes.get('/', getConnections)
+connectionRoutes.get('/', connectionTypevalidator, getAllConnections)
 connectionRoutes.post('/', createConnectionValidator, createConnection)
 
 

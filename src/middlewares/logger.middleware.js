@@ -19,7 +19,7 @@ function logger(req, res, next) {
             ConsoleLog('error', 'making serverRequest dir failed', dirErr);
         } else {
             const { method, originalUrl, ip } = req;
-            const fileContent = `[${originalUrl}] [${method}] [${ip}] [${date.toTimeString()}]\n`;
+            const fileContent = `[${originalUrl}] [${method}] [${ip}] [${date.toTimeString()}]  [body: ${JSON.stringify(req.body)}]\n`;
 
             fs.appendFile(filePath, fileContent, (fileErr) => {
                 fileErr && ConsoleLog('error', 'serverRequest log failed', fileErr)

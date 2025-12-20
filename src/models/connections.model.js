@@ -14,7 +14,7 @@ const connectionSchema = new Schema(
         type: {
             type: String,
             trim: true,
-            enum: ['DM', 'chat'],
+            enum: ['DM', 'group'],
             required: true,
         },
         isPrivate: {

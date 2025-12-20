@@ -22,6 +22,7 @@ const requestSchema = new Schema(
         },
         to: {
             type: SchemaTypes.ObjectId,
+            ref: 'users',
             required: true,
         },
         type: {

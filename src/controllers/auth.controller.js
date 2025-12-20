@@ -15,6 +15,18 @@ export const register = async (req, res) => {
             return res.status(409).json({ errors: [{ path: "email", msg: 'Email is exist' }] });
         } else {
             let newUser = await userModel.create({ email, password, ip, name, city, country });
+
+            const { accessToken, refreshToken } = genrateJWTtokens({ id: newUser._id, email });
+            newUser.refreshToken = refreshToken;
+            newUser.save();
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                sameSite: "lax",
+                path: '/api/auth/refresh',
+                secure: process.env.ENVIRONMENT == 'prod',
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+            });
             const senitizedUser = senitizeUser(newUser);
             return res.status(201).json(senitizedUser);
         }
@@ -47,8 +59,8 @@ export const login = async (req, res) => {
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 });
                 // send accesToken to frontend so that then can sent in headers
-                user.accessToken = accessToken;
                 const senitizedUser = senitizeUser(user);
+                senitizedUser.accessToken = accessToken;
                 return res.status(200).json(senitizedUser);
             } else {
                 return res.status(401).json({ error: 'incorrect password' });
@@ -64,12 +76,12 @@ export const login = async (req, res) => {
 
 export const authRefresh = async (req, res) => {
     if (!req.cookies || !req.cookies.refreshToken) {
-        return res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).json({ error: 'Unauthorized, refresh token not avilable' });
     } else {
-        const { refreshToken } = req.cookies;
+        const cookie_refreshToken = req.cookies.refreshToken;
         let tokenData;
         try {
-            tokenData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+            tokenData = jwt.verify(cookie_refreshToken, process.env.REFRESH_TOKEN_SECRET);
         } catch (error) {
             res.clearCookie('refreshToken', {
                 httpOnly: true,
@@ -81,7 +93,13 @@ export const authRefresh = async (req, res) => {
             return res.status(401).json({ error: error.message });
         }
 
-        const user = await userModel.findOne({ refreshToken }, { refreshToken: 0, ip: 0, password: 0 }).lean();
+        let user = await userModel.findById(tokenData.id);
+        const { accessToken, refreshToken } = genrateJWTtokens({ id: user._id, email: user.email });
+        user.refreshToken = refreshToken;
+        user.save();
+
+        user = senitizeUser(user);
+        user.accessToken = accessToken;
         return res.status(200).json({ data: user });
     }
 }

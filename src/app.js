@@ -5,11 +5,9 @@ import cookieParser from 'cookie-parser';
 import logger from './middlewares/logger.middleware.js';
 import { userRoutes } from './routes/user.routes.js';
 import { authRoutes } from './routes/auth.routes.js';
-import { messsageRoute } from './routes/message.routes.js';
-import { chatRoutes } from './routes/chat.routes.js';
-import { groupRoutes } from './routes/group.routes.js';
 import { connectionRoutes } from './routes/connection.routes.js';
-import { authMe } from './middlewares/authMe.middleware.js';
+import { AccessTokenValidator } from './middlewares/AccessTokenValidator.middleware.js';
+import { requestRoutes } from './routes/request.routes.js';
 
 const app = express();
 
@@ -29,15 +27,10 @@ app.use(logger);
 app.use('/api/auth', authRoutes);
 
 // protected routes
-app.use(authMe)
-app.use('/api/user', userRoutes);
-app.use('/api/connection', connectionRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/group', groupRoutes);
-
-
-
-// app.use('/api/send', messsageRoute);
+app.use(AccessTokenValidator);
+app.use('/api/users', userRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api/connections', connectionRoutes);
 
 
 // not found middleware

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { register, forgotPassword, login, authRefresh } from "../controllers/auth.controller.js";
 import { emailValidator, passwordValidator } from "../middlewares/validator.js";
-import { authMe } from "../middlewares/authMe.middleware.js";
+import { AccessTokenValidator } from "../middlewares/AccessTokenValidator.middleware.js";
 
 export const authRoutes = Router();
 
@@ -11,7 +11,7 @@ authRoutes.post('/login', emailValidator, passwordValidator, login);
 authRoutes.get('/refresh', authRefresh);
 
 
-authRoutes.use(authMe)
+authRoutes.use(AccessTokenValidator)
 authRoutes.post('/forgotPassword', forgotPassword);
 // authRoutes.put('/',)
 // authRoutes.patch('/',)
