@@ -3,29 +3,37 @@ import { model, Schema, SchemaType } from "mongoose";
 
 const messageSchema = new Schema(
     {
-        sender: {
+        from: {
             type: SchemaTypes.ObjectId,
             ref: "users",
             required: true,
         },
-        reciever: {
+        to: {
             type: SchemaTypes.ObjectId,
-            ref: "users",
+            ref: "connections",
             required: true,
         },
         message: {
             type: String,
-            required: true,
             trim: true,
         },
-        documents: {
-            type: [SchemaTypes.ObjectId],
-            ref: 'documents',
-            trim: true,
+        type: {
+            type: String,
+            enum: ['text', 'file', 'image'],
+            required: true
         }
     },
     {
         timestamps: true
     }
 );
+
+
+messageSchema.pre('save', function () {
+    if (this.type == 'text' && !this.message) {
+        throw new Error(`message can't be empty`);
+    }
+});
+
+
 export const messageModel = model('messages', messageSchema);

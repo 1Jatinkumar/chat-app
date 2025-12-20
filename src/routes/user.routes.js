@@ -1,17 +1,15 @@
 import { Router } from "express";
-import { getAllUsers, getUserById } from "../controllers/user.controller.js";
+import { getAllUsers, searchUser } from "../controllers/user.controller.js";
+import { userSearchValidator } from "../middlewares/validator.js";
 
-export const userRoute = Router();
+export const userRoutes = Router();
 
-userRoute.get('/', getAllUsers);
-userRoute.get('/:id', getUserById);
-// userRoute.post('/',)
-// userRoute.put('/',)
-// userRoute.patch('/',)
-// userRoute.delete('/',)
+userRoutes.get('/', getAllUsers);
+userRoutes.post('/search', userSearchValidator, searchUser);
+
 
 
 // not found route
-// authRoutes.all('/', (req, res)=>{
-//     res.send(`<h1>404</h1>`);
-// })
+userRoutes.use((req, res, next) => {
+    return res.status(404).send(`<h1>404</h1>`);
+})

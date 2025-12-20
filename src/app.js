@@ -3,9 +3,11 @@ import express from 'express';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import logger from './middlewares/logger.middleware.js';
-import { userRoute } from './routes/user.routes.js';
+import { userRoutes } from './routes/user.routes.js';
 import { authRoutes } from './routes/auth.routes.js';
-import { messsageRoute } from './routes/message.routes.js';
+import { connectionRoutes } from './routes/connection.routes.js';
+import { AccessTokenValidator } from './middlewares/AccessTokenValidator.middleware.js';
+import { requestRoutes } from './routes/request.routes.js';
 
 const app = express();
 
@@ -18,18 +20,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('public')))
 app.use(cookieParser())
-
 app.use(logger);
 
-// routes
+
+// open routes
 app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoute);
-app.use('/api/send', messsageRoute);
+
+// protected routes
+app.use(AccessTokenValidator);
+app.use('/api/users', userRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api/connections', connectionRoutes);
 
 
-// not found route
+// not found middleware
 app.use((req, res) => {
-    res.send(`<h1>404</h1>`);
+    res.send(`<h1>Welcome to Chat-app</h1>`);
 })
 
 

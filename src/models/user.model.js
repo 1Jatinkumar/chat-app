@@ -7,6 +7,7 @@ const userSchema = new Schema(
         name: {
             type: String,
             trim: true,
+            maxlength: 30,
             default: null
         },
         email: {
@@ -15,6 +16,7 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true,
             required: true,
+            maxlength: 254,
             validate: {
                 validator: function (v) {
                     return /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v);
@@ -42,11 +44,13 @@ const userSchema = new Schema(
         city: {
             type: String,
             trim: true,
+            maxlength: 100,
             default: null
         },
         country: {
             type: String,
             trim: true,
+            maxlength: 100,
             default: null
         },
         refreshToken: {
